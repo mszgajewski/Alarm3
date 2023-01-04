@@ -24,10 +24,10 @@ import java.util.Locale;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    public static final String TYPE_ONE_TIME = "OneTimeAlarm";
-    public static final String TYPE_REPEATING = "RepeatingAlarm";
-    public static final String EXTRA_MESSAGE = "message";
-    public static final String EXTRA_TYPE = "type";
+    public static final String TYPE_ONE_TIME = "Alarm jednorazowy";
+    public static final String TYPE_REPEATING = "Alarm wielokrotny";
+    public static final String EXTRA_MESSAGE = "wiadomość";
+    public static final String EXTRA_TYPE = "typ";
 
     private static final int ID_ONETIME = 100;
     private static final int ID_REPEATING = 101;
@@ -44,12 +44,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         String message = intent.getStringExtra(EXTRA_MESSAGE);
 
         String title = type.equalsIgnoreCase(TYPE_ONE_TIME) ? TYPE_ONE_TIME :TYPE_REPEATING;
-        int notifId = type.equalsIgnoreCase(TYPE_ONE_TIME) ? ID_ONETIME : ID_REPEATING;
+        int notifyId = type.equalsIgnoreCase(TYPE_ONE_TIME) ? ID_ONETIME : ID_REPEATING;
 
-        showAlarmNotification(context, title, message, notifId);
+        showAlarmNotification(context, title, message, notifyId);
     }
 
-    private void showAlarmNotification(Context context, String title, String message, int notifId){
+    private void showAlarmNotification(Context context, String title, String message, int notifyId){
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
@@ -75,7 +75,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Notification notification = mBuilder.build();
 
         if (notificationManager != null) {
-            notificationManager.notify(notifId, notification);
+            notificationManager.notify(notifyId, notification);
         }
     }
 
