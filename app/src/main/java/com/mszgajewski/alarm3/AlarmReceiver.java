@@ -31,7 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static final int ID_ONETIME = 100;
     private static final int ID_REPEATING = 101;
-    private static final String CHANNEL_ID = "channel_notif_alarms";
+    private static final String CHANNEL_ID = "channel_notify_alarms";
     private static final CharSequence CHANNEL_NAME = "Alarm Channel";
 
     public AlarmReceiver() {
