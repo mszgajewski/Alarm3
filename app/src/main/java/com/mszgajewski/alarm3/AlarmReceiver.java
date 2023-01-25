@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -19,6 +18,7 @@ import androidx.core.content.ContextCompat;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -26,7 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public static final String TYPE_ONE_TIME = "Alarm jednorazowy";
     public static final String TYPE_REPEATING = "Alarm wielokrotny";
-    public static final String EXTRA_MESSAGE = "wiadomość";
+    public static final String EXTRA_MESSAGE = "message";
     public static final String EXTRA_TYPE = "typ";
 
     private static final int ID_ONETIME = 100;
@@ -35,7 +35,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     private static final CharSequence CHANNEL_NAME = "Alarm Channel";
 
     public AlarmReceiver() {
-
     }
 
     @Override
@@ -43,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         String type = intent.getStringExtra(EXTRA_TYPE);
         String message = intent.getStringExtra(EXTRA_MESSAGE);
 
-        String title = type.equalsIgnoreCase(TYPE_ONE_TIME) ? TYPE_ONE_TIME :TYPE_REPEATING;
+        String title = type.equalsIgnoreCase(TYPE_ONE_TIME) ? TYPE_ONE_TIME : TYPE_REPEATING;
         int notifyId = type.equalsIgnoreCase(TYPE_ONE_TIME) ? ID_ONETIME : ID_REPEATING;
 
         showAlarmNotification(context, title, message, notifyId);
@@ -61,15 +60,13 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setVibrate(new long[] {1000, 1000, 1000, 1000, 1000})
                 .setSound(alarmSound);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[] {1000, 1000, 1000, 1000, 1000});
-            mBuilder.setChannelId(CHANNEL_ID);
+        NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+        notificationChannel.enableVibration(true);
+        notificationChannel.setVibrationPattern(new long[] {1000, 1000, 1000, 1000, 1000});
+        mBuilder.setChannelId(CHANNEL_ID);
 
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
+        if (notificationManager != null) {
+            notificationManager.createNotificationChannel(notificationChannel);
         }
 
         Notification notification = mBuilder.build();
@@ -79,15 +76,15 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
     }
 
-    public void setOneTimeAlarm(Context context, String type, String date,String time, String message) {
+    public void setOneTimeAlarm(Context context, String type, String date, String time, String message) {
         if (isDateInvalid(date, "yyyy-MM-dd") || isDateInvalid(time,"HH:mm")) return;
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context,AlarmReceiver.class);
         intent.putExtra(EXTRA_MESSAGE,message);
         intent.putExtra(EXTRA_TYPE,type);
 
-        String dateArray[] = date.split("-");
-        String timeArray[] = time.split(":");
+        String[] dateArray = date.split("-");
+        String[] timeArray = time.split(":");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, Integer.parseInt(dateArray[0]));
@@ -111,7 +108,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         intent.putExtra(EXTRA_MESSAGE,message);
         intent.putExtra(EXTRA_TYPE,type);
 
-        String timeArray[] = time.split(":");
+        String[] timeArray = time.split(":");
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]));
@@ -124,7 +121,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         Toast.makeText(context, "Alarm wielokrotny ustawiony", Toast.LENGTH_SHORT).show();
     }
-
 
     public void cancelAlarm(Context context, String type) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

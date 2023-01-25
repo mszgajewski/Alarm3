@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
 
     private AlarmReceiver alarmReceiver;
+
     private int mYear, mMonth, mDay, mHour, mMinute;
     private int mHourRepeat, mMinuteRepeat;
 
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
         mHour = calendar.get(Calendar.HOUR_OF_DAY);
         mMinute = calendar.get(Calendar.MINUTE);
-
         mHourRepeat = mHour;
         mMinuteRepeat = mMinute;
 
@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
                     binding.etOnceMessage.setError("Treść nie może być pusta");
                 } else {
                     alarmReceiver.setOneTimeAlarm(MainActivity.this, AlarmReceiver.TYPE_ONE_TIME,
-                            binding.tvOnceDate.getText().toString(), binding.tvOnceTime.getText().toString(),
+                            binding.tvOnceDate.getText().toString(),
+                            binding.tvOnceTime.getText().toString(),
                             binding.etOnceMessage.getText().toString());
                 }
             }
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                  if (binding.tvRepeatingTime.getText().toString().equalsIgnoreCase("")) {
                     Toast.makeText(MainActivity.this, "Brak godziny", Toast.LENGTH_SHORT).show();
                 } else if (TextUtils.isEmpty(binding.etRepeatingMessage.getText().toString())) {
-                     binding.etRepeatingMessage.setError("Treść nie może być pusta");
+                    binding.etRepeatingMessage.setError("Treść nie może być pusta");
                 } else {
                     alarmReceiver.setRepeatingAlarm(MainActivity.this, AlarmReceiver.TYPE_REPEATING,
                             binding.tvRepeatingTime.getText().toString(),
